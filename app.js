@@ -1,16 +1,28 @@
+require("dotenv").config();
+
+//express is a package for nodejs which helps us to reduce the amount of the boilerplate code and make the production easier.
 const express = require("express");
-const bodyParser = require("body-parser");
+//mongodb is the database language i use , and mongoose is like express 
+// helps us to reduce the amount of the boilerplate code and make the production easier.
 const mongoose = require("mongoose");
+//lodash is a package for manipulating the data as we want like i do in this app,
+//when the user enter the name of the newList (e.g todo) this package changes the first char to be Todo
 const _ = require("lodash");
 
+
+//here i take an instance of express to use.
 const app = express();
 
+//this is used to use the new data that we don't know what it is to use in html code.
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({ extended: true }));
+//this is used to parse the data.
+app.use(express.urlencoded({ extended: true }));
+//here we till express to use the files inside public like css to use in every request
 app.use(express.static("public"));
 
-mongoose.connect("mongodb+srv://admin-yousef:test123@cluster0.esv7l.mongodb.net/todolistDB?retryWrites=true&w=majority", { useNewUrlParser: true });
+//h
+mongoose.connect(`mongodb+srv://${process.env.USER_NAME}:${process.env.PASSWORD}@cluster0.esv7l.mongodb.net/todolistDB?retryWrites=true&w=majority`, { useNewUrlParser: true });
 
 const itemsSchema = {
   name: String
@@ -18,20 +30,6 @@ const itemsSchema = {
 
 const Item = mongoose.model("Item", itemsSchema);
 
-
-// const item1 = new Item({
-//   name: "Welcome to your todolist!"
-// });
-
-// const item2 = new Item({
-//   name: "Hit the + button to add a new item."
-// });
-
-// const item3 = new Item({
-//   name: "<-- Hit this to delete an item."
-// });
-
-// const defaultItems = [item1, item2, item3];
 
 const listSchema = {
   name: String,
@@ -133,9 +131,9 @@ app.get("/", function (req, res) {
 
   let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 8000;
+  port = 80;
 }
 
   app.listen(port, function () {
-    console.log("Server started on port 3000");
+    console.log("Server started on port 80");
   });
